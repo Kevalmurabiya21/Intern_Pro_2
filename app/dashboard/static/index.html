@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RDRS - Ransomware Detection &amp; Response System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --border: #30363d;
+    --text: #c9d1d9; --muted: #8b949e;
+    --normal: #3fb950; --warning: #d29922; --critical: #f85149;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text); margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  header {
+    padding: 16px 24px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  header h1 { font-size: 18px; margin: 0; }
+  header .sub { color: var(--muted); font-size: 12px; }
+  #api-url { background:#0d1117; color:var(--muted); border:1px solid var(--border);
+    padding:4px 8px; border-radius:6px; font-size:12px; width:220px; }
+  main {
+    display: grid; grid-template-columns: 320px 1fr; gap: 16px; padding: 16px 24px;
+  }
+  .panel {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px;
+  }
+  .band {
+    font-size: 32px; font-weight: 700; text-align: center; padding: 12px 0; border-radius: 8px;
+  }
+  .band.Normal { color: var(--normal); }
+  .band.Warning { color: var(--warning); }
+  .band.Critical { color: var(--critical); animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.55;} }
+  .score-bar-bg { background:#21262d; border-radius: 6px; height: 10px; margin: 8px 0 16px; overflow:hidden;}
+  .score-bar { height: 100%; background: linear-gradient(90deg, var(--normal), var(--warning), var(--critical)); }
+  .metric-row { display:flex; justify-content: space-between; padding: 4px 0; font-size: 13px; color: var(--muted); }
+  .metric-row b { color: var(--text); }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 0 0 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 500; }
+  tr:hover td { background: #1c2128; }
+  .pill { padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+  .pill.Normal { background: rgba(63,185,80,.15); color: var(--normal); }
+  .pill.Warning { background: rgba(210,153,34,.15); color: var(--warning); }
+  .pill.Critical { background: rgba(248,81,73,.15); color: var(--critical); }
+  #chart { width: 100%; height: 140px; }
+  .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .empty { color: var(--muted); font-size: 13px; padding: 12px 0; text-align: center; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
+  .dot.live { background: var(--normal); box-shadow: 0 0 6px var(--normal); }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>&#128737; RDRS &mdash; Ransomware Detection &amp; Response System</h1>
+    <div class="sub"><span class="dot live"></span>live &middot; auto-refreshing</div>
+  </div>
+  <div>
+    API: <input id="api-url" value="http://127.0.0.1:8000">
+  </div>
+</header>
+
+<main>
+  <div>
+    <div class="panel" style="margin-bottom:16px;">
+      <h2>Current Threat Level</h2>
+      <div id="band" class="band Normal">NORMAL</div>
+      <div class="score-bar-bg"><div id="score-bar" class="score-bar" style="width:0%"></div></div>
+      <div class="metric-row"><span>Score</span><b id="score">0</b> / 100</div>
+      <div class="metric-row"><span>Fired signals</span><b id="fired">-</b></div>
+    </div>
+
+    <div class="panel" style="margin-bottom:16px;">
+      <h2>Sliding Window Signals</h2>
+      <div class="metric-row"><span>Files modified / min</span><b id="s-files">0</b></div>
+      <div class="metric-row"><span>Renames / min</span><b id="s-renames">0</b></div>
+      <div class="metric-row"><span>Ext. changes / min</span><b id="s-ext">0</b></div>
+      <div class="metric-row"><span>Avg entropy (0-8)</span><b id="s-entropy">0</b></div>
+      <div class="metric-row"><span>Max CPU %</span><b id="s-cpu">0</b></div>
+    </div>
+
+    <div class="panel">
+      <h2>System</h2>
+      <div class="metric-row"><span>Total events seen</span><b id="event-count">0</b></div>
+      <div class="metric-row"><span>Incidents</span><b id="incident-count">0</b></div>
+      <div class="metric-row"><span>Uptime</span><b id="uptime">0s</b></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="panel" style="margin-bottom:16px;">
+      <h2>Entropy / CPU Trend</h2>
+      <canvas id="chart" width="800" height="140"></canvas>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <h2>Recent Alerts</h2>
+        <table id="alerts-table"><thead><tr><th>Time</th><th>Band</th><th>Score</th></tr></thead>
+        <tbody></tbody></table>
+        <div id="alerts-empty" class="empty" style="display:none;">No alerts yet</div>
+      </div>
+      <div class="panel">
+        <h2>Recent Events / Top Files</h2>
+        <table id="events-table"><thead><tr><th>Time</th><th>Type</th><th>Path</th></tr></thead>
+        <tbody></tbody></table>
+        <div id="events-empty" class="empty" style="display:none;">No events yet</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const REFRESH_MS = 3000;
+let history = []; // {t, entropy, cpu}
+
+function apiUrl() { return document.getElementById('api-url').value.replace(/\/$/, ''); }
+
+async function fetchJSON(path) {
+  const res = await fetch(apiUrl() + path);
+  if (!res.ok) throw new Error(res.status);
+  return res.json();
+}
+
+function setBand(band) {
+  const el = document.getElementById('band');
+  el.textContent = band.toUpperCase();
+  el.className = 'band ' + band;
+}
+
+function drawChart() {
+  const c = document.getElementById('chart');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  ctx.strokeStyle = '#30363d'; ctx.strokeRect(0, 0, c.width, c.height);
+
+  if (history.length < 2) return;
+  const n = history.length;
+  const stepX = c.width / Math.max(n - 1, 1);
+
+  // entropy line (0-8 scale)
+  ctx.beginPath();
+  ctx.strokeStyle = '#f85149';
+  history.forEach((h, i) => {
+    const x = i * stepX;
+    const y = c.height - (h.entropy / 8) * c.height;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // cpu line (0-100 scale)
+  ctx.beginPath();
+  ctx.strokeStyle = '#58a6ff';
+  history.forEach((h, i) => {
+    const x = i * stepX;
+    const y = c.height - (h.cpu / 100) * c.height;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+}
+
+function fillTable(bodyId, emptyId, rows, renderRow) {
+  const tbody = document.querySelector('#' + bodyId + ' tbody');
+  const empty = document.getElementById(emptyId);
+  tbody.innerHTML = '';
+  if (!rows.length) { empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  rows.forEach(r => tbody.appendChild(renderRow(r)));
+}
+
+async function refresh() {
+  try {
+    const status = await fetchJSON('/status');
+    setBand(status.threat_band || 'Normal');
+    document.getElementById('score').textContent = status.threat_score ?? 0;
+    document.getElementById('score-bar').style.width = (status.threat_score ?? 0) + '%';
+    document.getElementById('fired').textContent = (status.fired_signals || []).join(', ') || 'none';
+    document.getElementById('event-count').textContent = status.event_count ?? 0;
+    document.getElementById('incident-count').textContent = (status.db_counts && status.db_counts.incidents) ?? 0;
+    document.getElementById('uptime').textContent = Math.round(status.uptime_seconds || 0) + 's';
+
+    const sig = status.signals || {};
+    document.getElementById('s-files').textContent = sig.files_modified_per_minute ?? 0;
+    document.getElementById('s-renames').textContent = sig.renames_per_minute ?? 0;
+    document.getElementById('s-ext').textContent = sig.extension_changes_per_minute ?? 0;
+    document.getElementById('s-entropy').textContent = sig.avg_entropy ?? 0;
+    document.getElementById('s-cpu').textContent = sig.max_cpu_percent ?? 0;
+
+    history.push({ t: Date.now(), entropy: sig.avg_entropy || 0, cpu: sig.max_cpu_percent || 0 });
+    if (history.length > 60) history.shift();
+    drawChart();
+
+    const alerts = (await fetchJSON('/alerts?limit=10')).alerts || [];
+    fillTable('alerts-table', 'alerts-empty', alerts, (a) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${new Date(a.timestamp).toLocaleTimeString()}</td>
+        <td><span class="pill ${a.band}">${a.band}</span></td><td>${a.score}</td>`;
+      return tr;
+    });
+
+    const events = (await fetchJSON('/events?limit=10')).events || [];
+    fillTable('events-table', 'events-empty', events, (e) => {
+      const tr = document.createElement('tr');
+      const path = (e.dest_path || e.src_path || '').split('/').slice(-2).join('/');
+      tr.innerHTML = `<td>${new Date(e.timestamp).toLocaleTimeString()}</td>
+        <td>${e.event_type}</td><td title="${e.src_path}">${path}</td>`;
+      return tr;
+    });
+  } catch (err) {
+    document.getElementById('band').textContent = 'API UNREACHABLE';
+    console.error(err);
+  }
+}
+
+refresh();
+setInterval(refresh, REFRESH_MS);
+</script>
+</body>
+</html>

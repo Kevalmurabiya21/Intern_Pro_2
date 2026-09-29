@@ -1,0 +1,2 @@
+2026-09-29 19:42:59 | INFO     | rdrs.audit | CRITICAL response | suspect=System Idle Process (pid=0) | quarantined 9 file(s) | originals untouched
+2026-09-29 19:42:59 | INFO     | rdrs.audit | SIMULATION MODE: would terminate pid=0 (System Idle Process) - no process was actually killed.

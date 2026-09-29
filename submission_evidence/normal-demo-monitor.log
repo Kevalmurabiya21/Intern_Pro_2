@@ -1,0 +1,72 @@
+2026-09-29 19:45:47 | INFO     | rdrs.system | ============================================================
+2026-09-29 19:45:47 | INFO     | rdrs.system | RDRS starting up
+2026-09-29 19:45:47 | INFO     | rdrs.system | Watching: ['./data/normal-demo-sandbox']
+2026-09-29 19:45:47 | INFO     | rdrs.system | Simulation mode: True
+2026-09-29 19:45:47 | INFO     | rdrs.system | ============================================================
+2026-09-29 19:45:47 | INFO     | rdrs.system | FileMonitor watching: C:\Users\keval\OneDrive\Documents\ChatGPT\Internship_1_PROJECT_1\rdrs\data\normal-demo-sandbox
+2026-09-29 19:45:47 | INFO     | rdrs.system | API listening on http://127.0.0.1:8001  (try /health, /status, /alerts)
+2026-09-29 19:45:47 | INFO     | rdrs.system | Dashboard: http://127.0.0.1:8001/dashboard
+2026-09-29 19:45:47 | INFO     | rdrs.system | RDRS is running. Press Ctrl+C to stop.
+2026-09-29 19:45:55 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:02 | INFO     | rdrs.system | API "GET /dashboard HTTP/1.1" 200 -
+2026-09-29 19:46:02 | INFO     | rdrs.system | API "GET /favicon.ico HTTP/1.1" 404 -
+2026-09-29 19:46:17 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:17 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:17 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:20 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:20 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:20 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:23 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:23 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:23 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:26 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:26 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:26 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:29 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:29 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:29 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:32 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:32 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:32 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:35 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:35 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:35 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:38 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:38 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:38 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:41 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:41 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:41 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:44 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:44 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:44 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:47 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:47 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:47 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:50 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:50 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:50 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:53 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:53 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:53 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:56 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:56 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:56 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:59 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:46:59 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:46:59 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:47:02 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:47:02 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:47:02 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:47:05 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:47:05 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:47:05 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:47:08 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:47:08 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:47:08 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:47:11 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:47:11 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:47:11 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:47:14 | INFO     | rdrs.system | API "GET /status HTTP/1.1" 200 -
+2026-09-29 19:47:14 | INFO     | rdrs.system | API "GET /alerts?limit=10 HTTP/1.1" 200 -
+2026-09-29 19:47:14 | INFO     | rdrs.system | API "GET /events?limit=10 HTTP/1.1" 200 -

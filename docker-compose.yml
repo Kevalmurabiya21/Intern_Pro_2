@@ -1,0 +1,16 @@
+services:
+  rdrs:
+    build: .
+    container_name: rdrs
+    ports:
+      - "8000:8000"
+    environment:
+      # Reliable file-change detection for Docker Desktop bind mounts on Windows.
+      RDRS_USE_POLLING_MONITOR: "true"
+    volumes:
+      # Persist the database, logs, quarantine, and generated reports on the
+      # host so `docker compose down` doesn't lose your detection history.
+      - ./data:/rdrs/data
+      - ./logs:/rdrs/logs
+      - ./config.yaml:/rdrs/config.yaml:ro
+    restart: unless-stopped

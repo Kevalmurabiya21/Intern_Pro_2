@@ -1,0 +1,39 @@
+monitor:
+  watch_paths:
+    - "./data/normal-demo-sandbox"
+  ignore_patterns: [".git", "__pycache__", "rdrs.db"]
+detection:
+  window_seconds: 60
+  thresholds:
+    files_modified_per_minute: 20
+    renames_per_minute: 15
+    extension_changes_per_minute: 10
+    high_entropy_value: 7.5
+    cpu_spike_percent: 70.0
+scoring:
+  weights:
+    rapid_encryption: 40
+    mass_rename: 30
+    high_entropy: 25
+    cpu_spike: 15
+    unknown_program: 10
+  bands:
+    normal_max: 40
+    warning_max: 70
+response:
+  simulation_mode: true
+  quarantine_dir: "./data/normal-demo-quarantine"
+  incident_cooldown_seconds: 30
+  known_programs: ["python.exe", "python", "explorer.exe"]
+database:
+  path: "./data/normal-demo.db"
+logging:
+  dir: "./logs/normal-demo"
+  level: "INFO"
+  rotation: "10 MB"
+  retention: "10 days"
+api:
+  host: "127.0.0.1"
+  port: 8001
+dashboard:
+  refresh_seconds: 3

@@ -1,0 +1,22 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+.venv/
+venv/
+*.egg-info/
+pytest-windows-*.txt
+demo-monitor*.log
+
+# Runtime data - regenerated on each run, never commit real detection data
+logs/*.log
+data/rdrs.db
+data/sandbox/*
+data/quarantine/*
+data/reports/*
+!data/sandbox/.gitkeep
+!data/quarantine/.gitkeep
+!data/reports/.gitkeep
+
+.env
+.DS_Store

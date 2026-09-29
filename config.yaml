@@ -1,0 +1,84 @@
+# RDRS Configuration
+# ---------------------------------------------------------------------------
+# Edit this file to change what RDRS watches and how sensitive it is.
+# ---------------------------------------------------------------------------
+
+monitor:
+  # Folders RDRS will watch for file create/modify/delete/rename events.
+  watch_paths:
+    - "./data/sandbox"
+  # Ignore events for paths containing any of these substrings.
+  ignore_patterns:
+    - ".git"
+    - "__pycache__"
+    - "rdrs.db"
+
+detection:
+  # Sliding window size, in seconds, used to compute burst statistics.
+  window_seconds: 60
+
+  # Thresholds that decide when a signal "fires" inside the window.
+  thresholds:
+    files_modified_per_minute: 20   # files changed / minute to flag rapid encryption
+    renames_per_minute: 15          # renames / minute to flag mass rename
+    extension_changes_per_minute: 10 # e.g. .docx -> .locked
+    high_entropy_value: 7.5         # average entropy (0-8) considered "high"
+    cpu_spike_percent: 70.0         # process CPU% considered a spike
+
+scoring:
+  # Points added when each signal fires. Sum is capped at 100.
+  weights:
+    rapid_encryption: 40
+    mass_rename: 30
+    high_entropy: 25
+    cpu_spike: 15
+    unknown_program: 10
+
+  # Score bands.
+  bands:
+    normal_max: 40      # 0-40   -> Normal
+    warning_max: 70      # 40-70 -> Warning, anything above -> Critical
+
+response:
+  # Simulation mode: when true, RDRS only LOGS what it would do and never
+  # actually terminates a process. Keep this true unless you fully understand
+  # the risk of automated response on a real machine.
+  simulation_mode: true
+
+  # Folder evidence is copied into (originals are never modified/deleted).
+  quarantine_dir: "./data/quarantine"
+
+  # Minimum time between two incidents. Without this, a burst that hovers
+  # right at the Critical threshold (or noisy signals like cpu_spike, which
+  # key off whatever process momentarily has the highest CPU) can flap in
+  # and out of Critical dozens of times a second, creating a new incident
+  # and re-quarantining the same files every single time. This cooldown
+  # collapses one continuous burst into one incident. Found via soak testing.
+  incident_cooldown_seconds: 30
+
+  # Known safe/allow-listed executable names that should not by themselves
+  # trigger "unknown program" scoring (edit to match your OS).
+  known_programs:
+    - "python3"
+    - "python"
+    - "explorer.exe"
+    - "finder"
+    - "code"
+    - "bash"
+    - "zsh"
+
+database:
+  path: "./data/rdrs.db"
+
+logging:
+  dir: "./logs"
+  level: "INFO"
+  rotation: "10 MB"
+  retention: "10 days"
+
+api:
+  host: "127.0.0.1"
+  port: 8000
+
+dashboard:
+  refresh_seconds: 3
